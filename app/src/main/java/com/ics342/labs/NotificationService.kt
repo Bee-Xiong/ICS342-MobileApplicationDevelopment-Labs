@@ -8,16 +8,12 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 
 class NotificationService: Service() {
-
-    private val notificationManager: NotificationManagerCompat =
-        NotificationManagerCompat.from(this)
 
     override fun onCreate() {
         super.onCreate()
@@ -45,14 +41,10 @@ class NotificationService: Service() {
             .setAutoCancel(true)
 
             with(NotificationManagerCompat.from(this)){
-                notificationManager.notify(NOTIFICATION_ID, builder.build())
+                notify(NOTIFICATION_ID, builder.build())
             }
         return START_STICKY_COMPATIBILITY
     }
-
-
-
-
 
     override fun onBind(intent: Intent?): IBinder? {
         // No need to implement for lab 8
@@ -60,17 +52,15 @@ class NotificationService: Service() {
     }
 
     private fun createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = getString(R.string.app_name)
-            val descriptionText = "Description Text"
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
-                description = descriptionText
-            }
-            val notificationManager: NotificationManager =
-                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
+        val name = getString(R.string.app_name)
+        val descriptionText = "Description Text"
+        val importance = NotificationManager.IMPORTANCE_DEFAULT
+        val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
+            description = descriptionText
         }
+        val notificationManager: NotificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
     }
 
     companion object {

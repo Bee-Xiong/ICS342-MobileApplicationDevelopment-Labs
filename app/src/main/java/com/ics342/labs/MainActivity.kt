@@ -60,7 +60,6 @@ class MainActivity : ComponentActivity() {
 }
 
 fun startNotificationService(context: Context) {
-
     val intent = Intent(context, NotificationService::class.java)
     context.startService(intent)
 }
